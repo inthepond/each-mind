@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "eachmind"
+version = "0.1.0"
+description = "Per-agent memory protocol for multi-agent systems"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    { name = "eachmind contributors" },
+]
+keywords = [
+    "agents",
+    "multi-agent",
+    "memory",
+    "protocol",
+    "ai",
+    "llm",
+    "cognitive",
+    "perspective",
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/eachmind/eachmind"
+Repository = "https://github.com/eachmind/eachmind"
+Issues = "https://github.com/eachmind/eachmind/issues"
+Documentation = "https://github.com/eachmind/eachmind#readme"
+
+[tool.hatch.build.targets.wheel]
+packages = ["eachmind"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
