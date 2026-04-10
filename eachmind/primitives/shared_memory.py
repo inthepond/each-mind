@@ -9,6 +9,7 @@ valuable for the team.
 
 from __future__ import annotations
 
+import dataclasses
 import uuid
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -62,6 +63,15 @@ class SharedMemory:
 
     team_id: str = "default"
     entries: list[SharedEntry] = field(default_factory=list)
+    backend: Any = None
+
+    def __post_init__(self) -> None:
+        """Hydrate entries from backend if one is provided."""
+        if self.backend is not None and not self.entries:
+            for data in self.backend.list("shared_entries"):
+                data = dict(data)  # shallow copy to avoid mutating backend data
+                data["scope"] = ShareScope(data["scope"])
+                self.entries.append(SharedEntry(**data))
 
     def publish(
         self,
@@ -94,6 +104,12 @@ class SharedMemory:
             metadata=metadata,
         )
         self.entries.append(entry)
+
+        if self.backend is not None:
+            entry_data = dataclasses.asdict(entry)
+            entry_data["scope"] = entry.scope.value
+            self.backend.save("shared_entries", entry.entry_id, entry_data)
+
         return entry
 
     def recall(

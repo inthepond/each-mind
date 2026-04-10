@@ -8,6 +8,7 @@ default" principle. Agents must explicitly choose to share via SharedMemory.
 
 from __future__ import annotations
 
+import dataclasses
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -27,11 +28,19 @@ class PrivateMemory:
         agent_id: The owning agent's identifier.
         memories: Ordered list of encoded memories.
         capacity: Maximum number of memories to retain (0 = unlimited).
+        backend: Optional storage backend for persistence.
     """
 
     agent_id: str
     memories: list[EncodedMemory] = field(default_factory=list)
     capacity: int = 0  # 0 = unlimited
+    backend: Any = None
+
+    def __post_init__(self) -> None:
+        """Hydrate memories from backend if one is provided."""
+        if self.backend is not None and not self.memories:
+            for data in self.backend.list("private_memories"):
+                self.memories.append(EncodedMemory(**data))
 
     def store(self, encoded: EncodedMemory) -> None:
         """Store an encoded memory.
@@ -43,6 +52,13 @@ class PrivateMemory:
             encoded: An EncodedMemory to store.
         """
         self.memories.append(encoded)
+
+        if self.backend is not None:
+            self.backend.save(
+                "private_memories",
+                encoded.event_id,
+                dataclasses.asdict(encoded),
+            )
 
         if self.capacity > 0 and len(self.memories) > self.capacity:
             self._evict()

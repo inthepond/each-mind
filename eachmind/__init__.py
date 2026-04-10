@@ -16,6 +16,7 @@ from eachmind.primitives.perspective import Perspective
 from eachmind.primitives.consolidation import Consolidation
 from eachmind.primitives.drift import Drift
 from eachmind.agent import Agent
+from eachmind.backends import InMemoryBackend, SQLiteBackend
 
 __all__ = [
     "PrivateMemory",
@@ -25,4 +26,6 @@ __all__ = [
     "Consolidation",
     "Drift",
     "Agent",
+    "InMemoryBackend",
+    "SQLiteBackend",
 ]
