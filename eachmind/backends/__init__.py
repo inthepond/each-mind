@@ -1,3 +1,4 @@
 """Storage backend adapters for eachmind."""
 from eachmind.backends.memory import InMemoryBackend
-__all__ = ["InMemoryBackend"]
+from eachmind.backends.sqlite import SQLiteBackend
+__all__ = ["InMemoryBackend", "SQLiteBackend"]
