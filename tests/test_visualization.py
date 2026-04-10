@@ -1,14 +1,12 @@
 """Smoke tests for drift visualization (matplotlib)."""
-import pytest
+import importlib.util
 
-try:
-    import matplotlib
-    HAS_MATPLOTLIB = True
-except ImportError:
-    HAS_MATPLOTLIB = False
+import pytest
 
 from eachmind import Agent, MemoryEvent
 from eachmind.primitives.drift import Drift
+
+HAS_MATPLOTLIB = importlib.util.find_spec("matplotlib") is not None
 
 
 @pytest.mark.skipif(not HAS_MATPLOTLIB, reason="matplotlib not installed")

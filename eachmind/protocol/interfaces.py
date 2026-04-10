@@ -13,11 +13,11 @@ from __future__ import annotations
 
 from typing import Any, Protocol, runtime_checkable
 
-from eachmind.primitives.memory_event import MemoryEvent
-from eachmind.primitives.perspective import EncodedMemory, Perspective
-from eachmind.primitives.shared_memory import ShareScope, SharedEntry
 from eachmind.primitives.consolidation import Belief
 from eachmind.primitives.drift import DriftMeasurement
+from eachmind.primitives.memory_event import MemoryEvent
+from eachmind.primitives.perspective import EncodedMemory, Perspective
+from eachmind.primitives.shared_memory import SharedEntry, ShareScope
 
 
 @runtime_checkable

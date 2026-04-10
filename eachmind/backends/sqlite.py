@@ -1,9 +1,11 @@
 """SQLite storage backend — persistent, zero external dependencies."""
 from __future__ import annotations
+
 import json
 import sqlite3
 from dataclasses import dataclass, field
 from typing import Any
+
 
 @dataclass
 class SQLiteBackend:

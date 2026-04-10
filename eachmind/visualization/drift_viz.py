@@ -5,14 +5,12 @@ Requires matplotlib: pip install eachmind[viz]
 from __future__ import annotations
 
 from itertools import combinations
-from typing import Any
 
 try:
     import matplotlib
     matplotlib.use("Agg")  # Non-interactive backend for saving
-    import matplotlib.pyplot as plt
     import matplotlib.colors as mcolors
-    import matplotlib.patches as mpatches
+    import matplotlib.pyplot as plt
     from matplotlib.figure import Figure
 except ImportError as e:
     raise ImportError(

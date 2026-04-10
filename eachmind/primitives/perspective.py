@@ -10,7 +10,6 @@ naturally diverge (Drift) even among agents on the same team.
 from __future__ import annotations
 
 import hashlib
-import json
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -147,7 +146,7 @@ class Perspective:
         associations = []
         content_str = str(event.content).lower()
 
-        for prior_key, prior_value in self.priors.items():
+        for prior_key, _prior_value in self.priors.items():
             if prior_key.lower() in content_str:
                 associations.append(prior_key)
 

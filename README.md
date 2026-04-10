@@ -117,16 +117,16 @@ drift = analyst.perspective.drift_from(writer.perspective)
 
 ## Project Status
 
-> **Concept stage.** Project 1 of 2. Project 2 is an agent architecture built on top of eachmind that demonstrates genuine team cognition — agents that challenge, review, disagree, and accumulate institutional knowledge over time.
+> **Foundation complete.** Project 1 of 2. All core primitives, protocol specification, storage backends, visualizations, and integration examples are implemented. Project 2 is an agent architecture built on top of eachmind that demonstrates genuine team cognition — agents that challenge, review, disagree, and accumulate institutional knowledge over time.
 
 ## Roadmap
 
-- [ ] Core primitives implementation
-- [ ] Protocol specification
-- [ ] Storage backend adapters (in-memory, SQLite, Redis)
-- [ ] Integration examples (OpenAI Swarm, CrewAI, LangGraph)
-- [ ] Drift measurement and visualization
-- [ ] Consolidation algorithms
+- [x] Core primitives implementation
+- [x] Protocol specification
+- [x] Storage backend adapters (in-memory, SQLite, Redis)
+- [x] Integration examples (OpenAI Agents SDK, CrewAI, LangGraph)
+- [x] Drift measurement and visualization
+- [x] Consolidation algorithms
 - [ ] Project 2: Team cognition demo
 
 ## Contributing

@@ -10,7 +10,6 @@ from __future__ import annotations
 
 from collections import Counter
 from dataclasses import dataclass, field
-from typing import Any
 
 from eachmind.primitives.perspective import EncodedMemory
 
@@ -127,7 +126,10 @@ class Consolidation:
         for role_pattern, count in source_counts.items():
             if count >= self.consolidation_threshold and role_pattern:
                 belief = self._find_or_create_belief(
-                    content=f"High-salience events frequently come from role context: {role_pattern}",
+                    content=(
+                        "High-salience events frequently come from role context:"
+                        f" {role_pattern}"
+                    ),
                     tags=["salience", role_pattern],
                 )
                 updated.append(belief)
@@ -202,7 +204,10 @@ class Consolidation:
             )
             if count >= effective_threshold and role_pattern:
                 belief = self._find_or_create_belief(
-                    content=f"High-salience events frequently come from role context: {role_pattern}",
+                    content=(
+                        "High-salience events frequently come from role context:"
+                        f" {role_pattern}"
+                    ),
                     tags=["salience", role_pattern],
                 )
                 updated.append(belief)

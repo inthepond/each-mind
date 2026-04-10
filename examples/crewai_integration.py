@@ -23,10 +23,12 @@ import os
 # In production this line is not needed — your key is already set.
 os.environ.setdefault("OPENAI_API_KEY", "sk-fake-key-for-demo")
 
-from crewai import Agent as CrewAgent, Task, Crew
-from eachmind import Agent as MindAgent, MemoryEvent, SharedMemory
-from eachmind.primitives.drift import Drift
+from crewai import Agent as CrewAgent
+from crewai import Crew, Task
 
+from eachmind import Agent as MindAgent
+from eachmind import MemoryEvent, SharedMemory
+from eachmind.primitives.drift import Drift
 
 # ---------------------------------------------------------------------------
 # Simulated crew task outputs — no API calls needed
@@ -34,37 +36,58 @@ from eachmind.primitives.drift import Drift
 
 RESEARCHER_OUTPUTS = [
     MemoryEvent(
-        content="Market analysis: AI agent frameworks grew 210% YoY; enterprises demand memory isolation per role",
+        content=(
+            "Market analysis: AI agent frameworks grew 210% YoY;"
+            " enterprises demand memory isolation per role"
+        ),
         source="web_search",
     ),
     MemoryEvent(
-        content="Survey of 150 engineering teams: 74% report agent 'role bleed' as a top pain point in multi-agent systems",
+        content=(
+            "Survey of 150 engineering teams: 74% report agent 'role bleed'"
+            " as a top pain point in multi-agent systems"
+        ),
         source="survey_data",
     ),
     MemoryEvent(
-        content="Three leading frameworks (LangGraph, AutoGen, CrewAI) offer shared context pools; none provide per-agent private memory",
+        content=(
+            "Three leading frameworks (LangGraph, AutoGen, CrewAI) offer shared context"
+            " pools; none provide per-agent private memory"
+        ),
         source="competitive_review",
     ),
 ]
 
 ANALYST_OUTPUTS = [
     MemoryEvent(
-        content="Role bleed stems from shared context: when agents read each other's scratchpad, they drift toward median behaviour",
+        content=(
+            "Role bleed stems from shared context: when agents read each other's"
+            " scratchpad, they drift toward median behaviour"
+        ),
         source="technical_analysis",
     ),
     MemoryEvent(
-        content="Per-agent memory isolation reduces inter-agent confusion by an estimated 40% based on benchmark simulations",
+        content=(
+            "Per-agent memory isolation reduces inter-agent confusion by an estimated"
+            " 40% based on benchmark simulations"
+        ),
         source="benchmark_results",
     ),
 ]
 
 WRITER_OUTPUTS = [
     MemoryEvent(
-        content="Draft intro: 'CrewAI orchestrates who does what; eachmind ensures each agent remembers it differently'",
+        content=(
+            "Draft intro: 'CrewAI orchestrates who does what; eachmind ensures each"
+            " agent remembers it differently'"
+        ),
         source="draft_copy",
     ),
     MemoryEvent(
-        content="Target readers are senior engineers evaluating multi-agent stacks for production use",
+        content=(
+            "Target readers are senior engineers evaluating multi-agent stacks"
+            " for production use"
+        ),
         source="editorial_brief",
     ),
 ]
@@ -114,17 +137,29 @@ def main():
     )
 
     task_research = Task(
-        description="Research the current landscape of multi-agent AI frameworks and identify memory-related pain points.",
-        expected_output="A structured summary of market data, competitor gaps, and developer pain points.",
+        description=(
+            "Research the current landscape of multi-agent AI frameworks and"
+            " identify memory-related pain points."
+        ),
+        expected_output=(
+            "A structured summary of market data, competitor gaps, and developer"
+            " pain points."
+        ),
         agent=crew_researcher,
     )
     task_analysis = Task(
-        description="Analyse the research findings and derive strategic insights about per-agent memory isolation.",
+        description=(
+            "Analyse the research findings and derive strategic insights about"
+            " per-agent memory isolation."
+        ),
         expected_output="A concise analysis with quantified impact estimates.",
         agent=crew_analyst,
     )
     task_writing = Task(
-        description="Write a compelling introduction for a developer-facing product page about per-agent memory.",
+        description=(
+            "Write a compelling introduction for a developer-facing product page"
+            " about per-agent memory."
+        ),
         expected_output="A two-paragraph introduction draft.",
         agent=crew_writer,
     )

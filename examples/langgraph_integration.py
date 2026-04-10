@@ -9,10 +9,12 @@ Usage: python examples/langgraph_integration.py
 Requires: pip install langgraph
 """
 
-from langgraph.graph import StateGraph, START, END
 from typing import TypedDict
 
-from eachmind import Agent as MindAgent, MemoryEvent, SharedMemory
+from langgraph.graph import END, START, StateGraph
+
+from eachmind import Agent as MindAgent
+from eachmind import MemoryEvent, SharedMemory
 from eachmind.primitives.drift import Drift
 
 
@@ -96,12 +98,15 @@ def research_node(state: WorkflowState) -> WorkflowState:
 
     # Share key finding with the team
     researcher.share(
-        content=f"Market size $4.2B, CAGR 18% — high-confidence from academic sources.",
+        content="Market size $4.2B, CAGR 18% — high-confidence from academic sources.",
         to=SharedMemory.TEAM,
         reason="Critical baseline metric for downstream analysis",
     )
 
-    print(f"[research_node]  salience={enc.salience:.2f}  memories={researcher.private_memory.size}")
+    print(
+        f"[research_node]  salience={enc.salience:.2f}"
+        f"  memories={researcher.private_memory.size}"
+    )
     return {**state, "research": research_output}
 
 
@@ -152,7 +157,8 @@ def report_node(state: WorkflowState) -> WorkflowState:
         "Executive Report: The market presents a compelling entry window driven by "
         "regulatory clarity and a 18% CAGR tailwind. Incumbent weakness in the mid-market "
         "creates differentiated positioning. We recommend a phased go-to-market targeting "
-        "Series-B SaaS companies, with full expansion in 18 months pending product-market fit signals."
+        "Series-B SaaS companies, with full expansion in 18 months pending"
+        " product-market fit signals."
     )
 
     # eachmind: writer observes the analysis and team knowledge before writing

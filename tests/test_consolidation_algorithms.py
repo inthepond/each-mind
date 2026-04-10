@@ -81,7 +81,7 @@ class TestTemporalConsolidation:
         consolidation.decay_all(factor=0.1)
         decayed_confidences = [b.confidence for b in consolidation.beliefs]
 
-        for initial, decayed in zip(initial_confidences, decayed_confidences):
+        for initial, decayed in zip(initial_confidences, decayed_confidences, strict=True):
             assert decayed < initial
 
 

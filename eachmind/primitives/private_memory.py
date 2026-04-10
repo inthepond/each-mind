@@ -12,8 +12,7 @@ import dataclasses
 from dataclasses import dataclass, field
 from typing import Any
 
-from eachmind.primitives.memory_event import MemoryEvent
-from eachmind.primitives.perspective import EncodedMemory, Perspective
+from eachmind.primitives.perspective import EncodedMemory
 
 
 @dataclass

@@ -82,19 +82,19 @@ def main():
         "analyst", analyst.perspective,
         "writer", writer.perspective,
     )
-    print(f"=== Perspective drift ===")
+    print("=== Perspective drift ===")
     print(f"Drift between analyst and writer: {measurement.drift_value:.3f}")
     print()
 
     # --- Consolidate memories into beliefs ---
     analyst.consolidate()
-    print(f"=== Analyst beliefs after consolidation ===")
+    print("=== Analyst beliefs after consolidation ===")
     for belief in analyst.consolidation.beliefs:
         print(f"  [{belief.confidence:.2f}] {belief.content}")
     print()
 
     # --- Private memory stats ---
-    print(f"=== Memory stats ===")
+    print("=== Memory stats ===")
     print(f"Analyst private memories: {analyst.private_memory.size}")
     print(f"Writer private memories:  {writer.private_memory.size}")
     print(f"Shared memory entries:    {shared.size}")

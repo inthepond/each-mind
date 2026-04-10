@@ -14,9 +14,10 @@ Requires: pip install openai-agents
 """
 
 from agents import Agent as SDKAgent
-from eachmind import Agent as MindAgent, MemoryEvent, SharedMemory
-from eachmind.primitives.drift import Drift
 
+from eachmind import Agent as MindAgent
+from eachmind import MemoryEvent, SharedMemory
+from eachmind.primitives.drift import Drift
 
 # ---------------------------------------------------------------------------
 # Simulated agent "thinking" — no API keys needed
@@ -24,7 +25,10 @@ from eachmind.primitives.drift import Drift
 
 RESEARCHER_FINDINGS = [
     MemoryEvent(
-        content="Primary research indicates 68% of enterprise users cite integration complexity as top barrier",
+        content=(
+            "Primary research indicates 68% of enterprise users cite integration"
+            " complexity as top barrier"
+        ),
         source="user_interviews",
     ),
     MemoryEvent(
@@ -32,11 +36,17 @@ RESEARCHER_FINDINGS = [
         source="market_report",
     ),
     MemoryEvent(
-        content="Three direct competitors lack per-agent memory isolation; shared context causes role confusion",
+        content=(
+            "Three direct competitors lack per-agent memory isolation; shared context"
+            " causes role confusion"
+        ),
         source="competitive_analysis",
     ),
     MemoryEvent(
-        content="Early adopters report 40% reduction in agent hallucinations when using perspective-aware memory",
+        content=(
+            "Early adopters report 40% reduction in agent hallucinations when using"
+            " perspective-aware memory"
+        ),
         source="user_interviews",
     ),
 ]
@@ -149,7 +159,7 @@ def main():
     # 4. Researcher observes findings — each agent encodes differently
     # -----------------------------------------------------------------------
     print("=== Step 1: Researcher produces findings ===")
-    print(f"  (Simulated — in production: Runner.run(sdk_researcher, task))")
+    print("  (Simulated — in production: Runner.run(sdk_researcher, task))")
     print()
 
     for finding in RESEARCHER_FINDINGS:
@@ -167,7 +177,7 @@ def main():
     # 5. Analyst derives insight and shares to team memory
     # -----------------------------------------------------------------------
     print("=== Step 2: Analyst shares key insight to shared memory ===")
-    print(f"  (Simulated — in production: Runner.run(sdk_analyst, findings))")
+    print("  (Simulated — in production: Runner.run(sdk_analyst, findings))")
     print()
 
     mind_analyst.share(
@@ -182,7 +192,7 @@ def main():
     # 6. Writer observes the editorial brief, then recalls shared insights
     # -----------------------------------------------------------------------
     print("=== Step 3: Writer recalls shared insights ===")
-    print(f"  (Simulated — in production: Runner.run(sdk_writer, brief))")
+    print("  (Simulated — in production: Runner.run(sdk_writer, brief))")
     print()
 
     mind_writer.observe(WRITER_DRAFT_PROMPT)

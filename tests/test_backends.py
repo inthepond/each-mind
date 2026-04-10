@@ -1,7 +1,12 @@
 """Tests for storage backend adapters."""
-import pytest
-from eachmind.backends import InMemoryBackend
+import os
+
+from eachmind import MemoryEvent, SharedMemory
+from eachmind.backends import InMemoryBackend, SQLiteBackend
 from eachmind.backends.base import StorageBackend
+from eachmind.primitives.perspective import Perspective
+from eachmind.primitives.private_memory import PrivateMemory
+
 
 class TestStorageBackendProtocol:
     def test_in_memory_satisfies_protocol(self):
@@ -46,9 +51,6 @@ class TestInMemoryBackend:
         assert backend.get("shared", "k1") == {"b": 2}
 
 
-import os
-from eachmind.backends import SQLiteBackend
-from eachmind.backends.base import StorageBackend
 
 class TestSQLiteBackend:
     def _make_backend(self, tmp_path):
@@ -103,10 +105,6 @@ class TestSQLiteBackend:
 
 
 # --- Integration tests: backends wired into primitives ---
-
-from eachmind import Agent, MemoryEvent, SharedMemory
-from eachmind.primitives.perspective import Perspective
-from eachmind.primitives.private_memory import PrivateMemory
 
 
 class TestPrivateMemoryWithBackend:

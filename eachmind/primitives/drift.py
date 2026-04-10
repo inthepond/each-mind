@@ -11,7 +11,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any
 
 from eachmind.primitives.perspective import Perspective
 
@@ -76,7 +75,11 @@ class Drift:
             drift_value=drift_value,
             components={
                 "roles_differ": 0.0 if perspective_a.role == perspective_b.role else 1.0,
-                "history_divergence": 0.0 if perspective_a.history_hash == perspective_b.history_hash else 1.0,
+                "history_divergence": (
+                    0.0
+                    if perspective_a.history_hash == perspective_b.history_hash
+                    else 1.0
+                ),
             },
         )
 

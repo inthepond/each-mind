@@ -8,8 +8,11 @@ These tests verify:
 
 from __future__ import annotations
 
-import pytest
-
+from eachmind.primitives.consolidation import Consolidation
+from eachmind.primitives.drift import Drift
+from eachmind.primitives.perspective import Perspective
+from eachmind.primitives.private_memory import PrivateMemory
+from eachmind.primitives.shared_memory import SharedMemory
 from eachmind.protocol import (
     ConsolidationEngineProtocol,
     DriftTrackerProtocol,
@@ -17,11 +20,6 @@ from eachmind.protocol import (
     MemoryStoreProtocol,
     SharedStoreProtocol,
 )
-from eachmind.primitives.consolidation import Consolidation
-from eachmind.primitives.drift import Drift
-from eachmind.primitives.perspective import Perspective
-from eachmind.primitives.private_memory import PrivateMemory
-from eachmind.primitives.shared_memory import SharedMemory
 
 
 class TestProtocolImports:
@@ -228,7 +226,6 @@ class TestCustomImplementationsCompliance:
         assert isinstance(CustomEngine(), ConsolidationEngineProtocol)
 
     def test_custom_drift_tracker_passes(self):
-        from eachmind.primitives.perspective import Perspective
 
         class CustomTracker:
             def measure(

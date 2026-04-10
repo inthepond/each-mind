@@ -123,7 +123,10 @@ def main() -> None:
                 MemoryEvent(content="Customer churn dropped to 2.1%", source="metrics"),
             ],
             "writer": [
-                MemoryEvent(content="Users praise the new onboarding flow on social media", source="social"),
+                MemoryEvent(
+                    content="Users praise the new onboarding flow on social media",
+                    source="social",
+                ),
                 MemoryEvent(content="Draft blog post on Q3 results", source="social"),
             ],
             "reviewer": [
@@ -141,7 +144,10 @@ def main() -> None:
                 MemoryEvent(content="A/B test shows 8% lift with new copy", source="metrics"),
             ],
             "writer": [
-                MemoryEvent(content="Interview with power user reveals unexpected workflow", source="interview"),
+                MemoryEvent(
+                    content="Interview with power user reveals unexpected workflow",
+                    source="interview",
+                ),
             ],
             "reviewer": [
                 MemoryEvent(content="Refactored auth module passes all tests", source="code"),
@@ -154,7 +160,10 @@ def main() -> None:
         {
             "analyst": [
                 MemoryEvent(content="Monthly active users hit 50k milestone", source="metrics"),
-                MemoryEvent(content="Support tickets mention confusing pricing page", source="social"),
+                MemoryEvent(
+                    content="Support tickets mention confusing pricing page",
+                    source="social",
+                ),
             ],
             "writer": [
                 MemoryEvent(content="Blog post on product vision goes viral", source="social"),
@@ -162,21 +171,36 @@ def main() -> None:
             ],
             "reviewer": [
                 MemoryEvent(content="Dependency audit completed, 3 upgrades needed", source="code"),
-                MemoryEvent(content="Load testing reveals 99.5% uptime over 30 days", source="metrics"),
+                MemoryEvent(
+                    content="Load testing reveals 99.5% uptime over 30 days",
+                    source="metrics",
+                ),
             ],
             "strategist": [
-                MemoryEvent(content="User interviews suggest need for better search", source="interview"),
-                MemoryEvent(content="Support tickets mention confusing pricing page", source="social"),
+                MemoryEvent(
+                    content="User interviews suggest need for better search",
+                    source="interview",
+                ),
+                MemoryEvent(
+                    content="Support tickets mention confusing pricing page",
+                    source="social",
+                ),
             ],
         },
         # Batch 4 — deep specialisation
         {
             "analyst": [
-                MemoryEvent(content="Funnel conversion rate up 3pp after redesign", source="metrics"),
+                MemoryEvent(
+                    content="Funnel conversion rate up 3pp after redesign",
+                    source="metrics",
+                ),
                 MemoryEvent(content="NPS score dipped from 62 to 58", source="metrics"),
             ],
             "writer": [
-                MemoryEvent(content="Customer success story: Acme Corp saves 40%", source="interview"),
+                MemoryEvent(
+                    content="Customer success story: Acme Corp saves 40%",
+                    source="interview",
+                ),
                 MemoryEvent(content="Newsletter open rate trending down", source="social"),
             ],
             "reviewer": [
@@ -184,14 +208,20 @@ def main() -> None:
                 MemoryEvent(content="Codebase complexity score improved 12%", source="code"),
             ],
             "strategist": [
-                MemoryEvent(content="Competitor acquired a key integration partner", source="report"),
+                MemoryEvent(
+                    content="Competitor acquired a key integration partner",
+                    source="report",
+                ),
                 MemoryEvent(content="Enterprise pilot with BigCorp progressing", source="report"),
             ],
         },
         # Batch 5 — final round
         {
             "analyst": [
-                MemoryEvent(content="Cohort analysis: Jan users retain 15% better", source="metrics"),
+                MemoryEvent(
+                    content="Cohort analysis: Jan users retain 15% better",
+                    source="metrics",
+                ),
             ],
             "writer": [
                 MemoryEvent(content="Product launch announcement drafted", source="social"),
