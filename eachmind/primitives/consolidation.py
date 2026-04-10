@@ -61,13 +61,30 @@ class Consolidation:
     Attributes:
         beliefs: Currently held beliefs.
         consolidation_threshold: Minimum pattern frequency to form a belief.
+        strategy: Algorithm used for consolidation ("frequency" or "temporal").
     """
 
     beliefs: list[Belief] = field(default_factory=list)
     consolidation_threshold: int = 3
+    strategy: str = "frequency"
 
     def process(self, memories: list[EncodedMemory]) -> list[Belief]:
         """Analyze memories and consolidate patterns into beliefs.
+
+        Dispatches to the appropriate strategy method based on self.strategy.
+
+        Args:
+            memories: The encoded memories to analyze for patterns.
+
+        Returns:
+            List of newly created or reinforced beliefs.
+        """
+        if self.strategy == "temporal":
+            return self._process_temporal(memories)
+        return self._process_frequency(memories)
+
+    def _process_frequency(self, memories: list[EncodedMemory]) -> list[Belief]:
+        """Frequency-based consolidation — original algorithm.
 
         Scans through a set of encoded memories, identifies recurring
         patterns (sources, associations, high-salience themes), and
@@ -109,6 +126,81 @@ class Consolidation:
 
         for role_pattern, count in source_counts.items():
             if count >= self.consolidation_threshold and role_pattern:
+                belief = self._find_or_create_belief(
+                    content=f"High-salience events frequently come from role context: {role_pattern}",
+                    tags=["salience", role_pattern],
+                )
+                updated.append(belief)
+
+        return updated
+
+    def _process_temporal(self, memories: list[EncodedMemory]) -> list[Belief]:
+        """Temporal consolidation — weights recent memories higher.
+
+        Sorts memories by encoding_number (or list position) and gives
+        the last 25% of memories 2x weight when counting associations.
+        Recent high-salience memories also use a lower effective threshold.
+
+        Args:
+            memories: The encoded memories to analyze for patterns.
+
+        Returns:
+            List of newly created or reinforced beliefs.
+        """
+        if not memories:
+            return []
+
+        updated: list[Belief] = []
+
+        # Sort by encoding_number if available, otherwise preserve list order
+        sorted_memories = sorted(
+            memories,
+            key=lambda m: m.metadata.get("encoding_number", 0),
+        )
+
+        # Determine the cutoff for "recent" memories (last 25%)
+        recent_cutoff = max(1, len(sorted_memories) - len(sorted_memories) // 4)
+
+        # Build weighted association counts
+        association_counts: Counter[str] = Counter()
+        association_events: dict[str, list[str]] = {}
+
+        for idx, memory in enumerate(sorted_memories):
+            weight = 2 if idx >= recent_cutoff else 1
+            for assoc in memory.associations:
+                association_counts[assoc] += weight
+                association_events.setdefault(assoc, []).append(memory.event_id)
+
+        for pattern, count in association_counts.items():
+            if count >= self.consolidation_threshold:
+                belief = self._find_or_create_belief(
+                    content=f"Pattern: {pattern} is recurrently relevant",
+                    tags=[pattern],
+                )
+                for eid in association_events[pattern]:
+                    belief.reinforce(eid)
+                updated.append(belief)
+
+        # Consolidate by high-salience source patterns with temporal weighting
+        source_counts: Counter[str] = Counter()
+        recent_source_counts: Counter[str] = Counter()
+
+        for idx, memory in enumerate(sorted_memories):
+            role = memory.metadata.get("role", "")
+            if memory.salience >= 0.7:
+                weight = 2 if idx >= recent_cutoff else 1
+                source_counts[role] += weight
+                if idx >= recent_cutoff:
+                    recent_source_counts[role] += 1
+
+        for role_pattern, count in source_counts.items():
+            # Lower threshold if recent memories reinforce the pattern
+            effective_threshold = (
+                max(1, self.consolidation_threshold - 1)
+                if recent_source_counts.get(role_pattern, 0) > 0
+                else self.consolidation_threshold
+            )
+            if count >= effective_threshold and role_pattern:
                 belief = self._find_or_create_belief(
                     content=f"High-salience events frequently come from role context: {role_pattern}",
                     tags=["salience", role_pattern],
