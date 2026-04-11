@@ -88,31 +88,9 @@ drift = analyst.perspective.drift_from(writer.perspective)
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────┐
-│                   Agent Team                     │
-│                                                  │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐      │
-│  │ Agent A   │  │ Agent B   │  │ Agent C   │      │
-│  │┌────────┐│  │┌────────┐│  │┌────────┐│      │
-│  ││Private ││  ││Private ││  ││Private ││      │
-│  ││Memory  ││  ││Memory  ││  ││Memory  ││      │
-│  │└────────┘│  │└────────┘│  │└────────┘│      │
-│  │┌────────┐│  │┌────────┐│  │┌────────┐│      │
-│  ││Perspect││  ││Perspect││  ││Perspect││      │
-│  ││ive     ││  ││ive     ││  ││ive     ││      │
-│  │└────────┘│  │└────────┘│  │└────────┘│      │
-│  └─────┬────┘  └─────┬────┘  └─────┬────┘      │
-│        │  share()     │  share()    │            │
-│        ▼              ▼             ▼            │
-│  ┌──────────────────────────────────────┐       │
-│  │          Shared Memory (opt-in)       │       │
-│  │  ┌─────────────────────────────────┐ │       │
-│  │  │    Consolidated Team Knowledge   │ │       │
-│  │  └─────────────────────────────────┘ │       │
-│  └──────────────────────────────────────┘       │
-└─────────────────────────────────────────────────┘
-```
+<picture>
+  <img alt="eachmind architecture" src="assets/architecture.svg" width="100%">
+</picture>
 
 ## What It Is NOT
 

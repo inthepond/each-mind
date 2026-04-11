@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 400" width="520" height="400">
+  <rect width="520" height="400" fill="#000"/>
+
+  <!-- Agent Team outer box -->
+  <rect x="20" y="16" width="480" height="280" rx="4" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.4"/>
+  <text x="260" y="40" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="13" opacity="0.6">Agent Team</text>
+
+  <!-- Agent A -->
+  <rect x="48" y="60" width="120" height="150" rx="3" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.3"/>
+  <text x="108" y="80" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="11" opacity="0.5">Agent A</text>
+  <rect x="60" y="90" width="96" height="40" rx="2" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.25"/>
+  <text x="108" y="115" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="10" opacity="0.45">Private Memory</text>
+  <rect x="60" y="140" width="96" height="40" rx="2" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.25"/>
+  <text x="108" y="165" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="10" opacity="0.45">Perspective</text>
+
+  <!-- Agent B -->
+  <rect x="200" y="60" width="120" height="150" rx="3" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.3"/>
+  <text x="260" y="80" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="11" opacity="0.5">Agent B</text>
+  <rect x="212" y="90" width="96" height="40" rx="2" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.25"/>
+  <text x="260" y="115" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="10" opacity="0.45">Private Memory</text>
+  <rect x="212" y="140" width="96" height="40" rx="2" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.25"/>
+  <text x="260" y="165" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="10" opacity="0.45">Perspective</text>
+
+  <!-- Agent C -->
+  <rect x="352" y="60" width="120" height="150" rx="3" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.3"/>
+  <text x="412" y="80" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="11" opacity="0.5">Agent C</text>
+  <rect x="364" y="90" width="96" height="40" rx="2" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.25"/>
+  <text x="412" y="115" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="10" opacity="0.45">Private Memory</text>
+  <rect x="364" y="140" width="96" height="40" rx="2" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.25"/>
+  <text x="412" y="165" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="10" opacity="0.45">Perspective</text>
+
+  <!-- share() arrows -->
+  <line x1="108" y1="210" x2="108" y2="250" stroke="#fff" stroke-width="0.5" opacity="0.3"/>
+  <polygon points="108,254 104,246 112,246" fill="#fff" opacity="0.3"/>
+  <line x1="260" y1="210" x2="260" y2="250" stroke="#fff" stroke-width="0.5" opacity="0.3"/>
+  <polygon points="260,254 256,246 264,246" fill="#fff" opacity="0.3"/>
+  <line x1="412" y1="210" x2="412" y2="250" stroke="#fff" stroke-width="0.5" opacity="0.3"/>
+  <polygon points="412,254 408,246 416,246" fill="#fff" opacity="0.3"/>
+
+  <text x="155" y="235" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="9" opacity="0.3">share()</text>
+  <text x="340" y="235" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="9" opacity="0.3">share()</text>
+
+  <!-- Shared Memory box -->
+  <rect x="48" y="258" width="424" height="68" rx="3" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.3"/>
+  <text x="260" y="280" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="11" opacity="0.5">Shared Memory (opt-in)</text>
+  <rect x="80" y="290" width="360" height="28" rx="2" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.2"/>
+  <text x="260" y="309" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="10" opacity="0.4">Consolidated Team Knowledge</text>
+
+  <!-- Footer -->
+  <text x="260" y="370" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="10" opacity="0.12">
+    private by default — sharing is deliberate
+  </text>
+</svg>
