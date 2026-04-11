@@ -44,10 +44,10 @@ examples = ["openai-agents>=0.1", "crewai>=0.100", "langgraph>=0.3"]
 dev = ["pytest", "pytest-asyncio", "ruff", "mypy", "matplotlib>=3.7", "aiosqlite>=0.20"]
 
 [project.urls]
-Homepage = "https://github.com/eachmind/eachmind"
-Repository = "https://github.com/eachmind/eachmind"
-Issues = "https://github.com/eachmind/eachmind/issues"
-Documentation = "https://github.com/eachmind/eachmind#readme"
+Homepage = "https://github.com/inthepond/each-mind"
+Repository = "https://github.com/inthepond/each-mind"
+Issues = "https://github.com/inthepond/each-mind/issues"
+Documentation = "https://github.com/inthepond/each-mind#readme"
 
 [tool.hatch.build.targets.wheel]
 packages = ["eachmind"]
