@@ -54,6 +54,7 @@ packages = ["eachmind"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+asyncio_mode = "auto"
 
 [tool.ruff]
 target-version = "py310"
