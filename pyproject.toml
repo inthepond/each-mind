@@ -38,9 +38,10 @@ classifiers = [
 
 [project.optional-dependencies]
 redis = ["redis>=5.0"]
+async = ["aiosqlite>=0.20"]
 viz = ["matplotlib>=3.7"]
 examples = ["openai-agents>=0.1", "crewai>=0.100", "langgraph>=0.3"]
-dev = ["pytest", "ruff", "mypy", "matplotlib>=3.7"]
+dev = ["pytest", "pytest-asyncio", "ruff", "mypy", "matplotlib>=3.7", "aiosqlite>=0.20"]
 
 [project.urls]
 Homepage = "https://github.com/eachmind/eachmind"
