@@ -11,6 +11,7 @@ __version__ = "0.1.0"
 
 from eachmind.agent import Agent
 from eachmind.backends import InMemoryBackend, SQLiteBackend
+from eachmind.hooks import LoggingHook, MemoryHook
 from eachmind.primitives.consolidation import Consolidation
 from eachmind.primitives.drift import Drift
 from eachmind.primitives.memory_event import MemoryEvent
@@ -28,4 +29,6 @@ __all__ = [
     "Agent",
     "InMemoryBackend",
     "SQLiteBackend",
+    "MemoryHook",
+    "LoggingHook",
 ]

@@ -8,6 +8,7 @@ interact with SharedMemory to selectively publish knowledge.
 
 from __future__ import annotations
 
+import contextlib
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -44,6 +45,7 @@ class Agent:
     private_memory: PrivateMemory = field(default=None)
     consolidation: Consolidation = field(default=None)
     shared_memory: SharedMemory | None = None
+    hooks: list[Any] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         if self.perspective is None:
@@ -67,6 +69,9 @@ class Agent:
         """
         encoded = self.perspective.encode(event)
         self.private_memory.store(encoded)
+        for hook in self.hooks:
+            with contextlib.suppress(Exception):
+                hook.on_observe(self.name, encoded.event_id, encoded.salience)
         return encoded
 
     def recall(
@@ -88,12 +93,27 @@ class Agent:
             List of memories or shared entries.
         """
         if isinstance(source, ShareScope) and self.shared_memory is not None:
-            return self.shared_memory.recall(agent_id=self.name, source=source, limit=limit)
+            results = self.shared_memory.recall(agent_id=self.name, source=source, limit=limit)
+            source_name = "shared"
+            for hook in self.hooks:
+                with contextlib.suppress(Exception):
+                    hook.on_recall(self.name, len(results), source_name)
+            return results
 
         if source is SharedMemory and self.shared_memory is not None:
-            return self.shared_memory.recall(agent_id=self.name, limit=limit)
+            results = self.shared_memory.recall(agent_id=self.name, limit=limit)
+            source_name = "shared"
+            for hook in self.hooks:
+                with contextlib.suppress(Exception):
+                    hook.on_recall(self.name, len(results), source_name)
+            return results
 
-        return self.private_memory.recall(min_salience=min_salience, limit=limit)
+        results = self.private_memory.recall(min_salience=min_salience, limit=limit)
+        source_name = "private"
+        for hook in self.hooks:
+            with contextlib.suppress(Exception):
+                hook.on_recall(self.name, len(results), source_name)
+        return results
 
     def share(
         self,
@@ -119,13 +139,18 @@ class Agent:
         if self.shared_memory is None:
             return None
 
-        return self.shared_memory.publish(
+        entry = self.shared_memory.publish(
             content=content,
             shared_by=self.name,
             scope=to,
             targets=targets,
             reason=reason,
         )
+        if entry is not None:
+            for hook in self.hooks:
+                with contextlib.suppress(Exception):
+                    hook.on_share(self.name, str(content), to.value)
+        return entry
 
     def consolidate(self) -> None:
         """Consolidate private memories into durable beliefs.
@@ -140,6 +165,10 @@ class Agent:
         for belief in beliefs:
             for tag in belief.tags:
                 self.perspective.priors[tag] = belief.confidence
+
+        for hook in self.hooks:
+            with contextlib.suppress(Exception):
+                hook.on_consolidate(self.name, len(beliefs))
 
     def connect(self, shared_memory: SharedMemory) -> None:
         """Connect this agent to a shared memory space.
