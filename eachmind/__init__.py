@@ -10,7 +10,8 @@ Any agent system can adopt it.
 __version__ = "0.1.0"
 
 from eachmind.agent import Agent
-from eachmind.backends import InMemoryBackend, SQLiteBackend
+from eachmind.async_primitives import AsyncPrivateMemory, AsyncSharedMemory
+from eachmind.backends import AsyncInMemoryBackend, InMemoryBackend, SQLiteBackend
 from eachmind.hooks import LoggingHook, MemoryHook
 from eachmind.primitives.consolidation import Consolidation
 from eachmind.primitives.drift import Drift
@@ -18,17 +19,24 @@ from eachmind.primitives.memory_event import MemoryEvent
 from eachmind.primitives.perspective import Perspective
 from eachmind.primitives.private_memory import PrivateMemory
 from eachmind.primitives.shared_memory import SharedMemory
+from eachmind.retrieval import TFIDFRetriever
+from eachmind.serialization import JSONSerializer
 
 __all__ = [
-    "PrivateMemory",
-    "SharedMemory",
-    "MemoryEvent",
-    "Perspective",
+    "Agent",
+    "AsyncInMemoryBackend",
+    "AsyncPrivateMemory",
+    "AsyncSharedMemory",
     "Consolidation",
     "Drift",
-    "Agent",
     "InMemoryBackend",
-    "SQLiteBackend",
-    "MemoryHook",
+    "JSONSerializer",
     "LoggingHook",
+    "MemoryEvent",
+    "MemoryHook",
+    "Perspective",
+    "PrivateMemory",
+    "SharedMemory",
+    "SQLiteBackend",
+    "TFIDFRetriever",
 ]
