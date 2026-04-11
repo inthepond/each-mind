@@ -1,141 +1,105 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 380" width="640" height="380">
-  <defs>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="3" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 280" width="480" height="280">
+  <rect width="480" height="280" fill="#000"/>
 
-  <!-- Background -->
-  <rect width="640" height="380" fill="#000000"/>
+  <!-- event dot at top center -->
+  <circle cx="240" cy="40" r="4" fill="#fff" opacity="0">
+    <animate attributeName="opacity" values="0;0.9;0.9;0.9;0.9;0.9;0.9;0.5" dur="12s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="240" cy="40" r="4" fill="none" stroke="#fff" stroke-width="0.5" opacity="0">
+    <animate attributeName="opacity" values="0;0.5;0.2;0.2;0.2;0.2;0.2;0" dur="12s" repeatCount="indefinite"/>
+    <animate attributeName="r" values="4;20;20;20;20;20;20;20" dur="12s" repeatCount="indefinite"/>
+  </circle>
 
-  <!-- Title -->
-  <text x="320" y="32" text-anchor="middle" fill="#ffffff" font-family="system-ui, -apple-system, Helvetica, Arial, sans-serif" font-size="13" letter-spacing="0.15em" opacity="0.5">
-    SAME EVENT, DIFFERENT ENCODING
+  <!-- three vertical lines down from event -->
+  <line x1="240" y1="50" x2="100" y2="100" stroke="#fff" stroke-width="0.4" opacity="0">
+    <animate attributeName="opacity" values="0;0;0.3;0.3;0.3;0.3;0.15;0" dur="12s" repeatCount="indefinite"/>
+  </line>
+  <line x1="240" y1="50" x2="240" y2="100" stroke="#fff" stroke-width="0.4" opacity="0">
+    <animate attributeName="opacity" values="0;0;0.3;0.3;0.3;0.3;0.15;0" dur="12s" repeatCount="indefinite"/>
+  </line>
+  <line x1="240" y1="50" x2="380" y2="100" stroke="#fff" stroke-width="0.4" opacity="0">
+    <animate attributeName="opacity" values="0;0;0.3;0.3;0.3;0.3;0.15;0" dur="12s" repeatCount="indefinite"/>
+  </line>
+
+  <!-- dots traveling -->
+  <circle r="2" fill="#fff" opacity="0">
+    <animate attributeName="opacity" values="0;0;1;0;0;0;0;0" dur="12s" repeatCount="indefinite"/>
+    <animate attributeName="cx" values="240;240;100;100;100;100;100;100" dur="12s" repeatCount="indefinite"/>
+    <animate attributeName="cy" values="50;50;100;100;100;100;100;100" dur="12s" repeatCount="indefinite"/>
+  </circle>
+  <circle r="2" fill="#fff" opacity="0">
+    <animate attributeName="opacity" values="0;0;1;0;0;0;0;0" dur="12s" repeatCount="indefinite"/>
+    <animate attributeName="cx" values="240;240;240;240;240;240;240;240" dur="12s" repeatCount="indefinite"/>
+    <animate attributeName="cy" values="50;50;100;100;100;100;100;100" dur="12s" repeatCount="indefinite"/>
+  </circle>
+  <circle r="2" fill="#fff" opacity="0">
+    <animate attributeName="opacity" values="0;0;1;0;0;0;0;0" dur="12s" repeatCount="indefinite"/>
+    <animate attributeName="cx" values="240;240;380;380;380;380;380;380" dur="12s" repeatCount="indefinite"/>
+    <animate attributeName="cy" values="50;50;100;100;100;100;100;100" dur="12s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- AGENT 1 -->
+  <circle cx="100" cy="120" r="16" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.15">
+    <animate attributeName="opacity" values="0.15;0.15;0.15;0.5;0.35;0.35;0.2;0.15" dur="12s" repeatCount="indefinite"/>
+  </circle>
+  <text x="100" y="152" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="13" opacity="0.4">
+    analyst
+  </text>
+  <text x="100" y="175" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="18" font-weight="300" opacity="0">
+    .82
+    <animate attributeName="opacity" values="0;0;0;0;0.8;0.8;0.3;0" dur="12s" repeatCount="indefinite"/>
+  </text>
+  <text x="100" y="195" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="11" opacity="0">
+    trend
+    <animate attributeName="opacity" values="0;0;0;0;0.35;0.35;0.15;0" dur="12s" repeatCount="indefinite"/>
   </text>
 
-  <!-- ═══ EVENT ═══ -->
-  <circle cx="320" cy="80" r="5" fill="none" stroke="#ffffff" stroke-width="0.6" opacity="0">
-    <animate attributeName="r" values="5;28;28;28;28;28;28;28;28;28" dur="14s" repeatCount="indefinite" calcMode="spline" keySplines="0.25 0.1 0.25 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1"/>
-    <animate attributeName="opacity" values="0;0.4;0.12;0.12;0.12;0.12;0.12;0.12;0.06;0" dur="14s" repeatCount="indefinite"/>
+  <!-- AGENT 2 -->
+  <circle cx="240" cy="120" r="16" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.15">
+    <animate attributeName="opacity" values="0.15;0.15;0.15;0.5;0.35;0.35;0.2;0.15" dur="12s" repeatCount="indefinite"/>
   </circle>
-  <circle cx="320" cy="80" r="3" fill="#ffffff" opacity="0">
-    <animate attributeName="opacity" values="0;1;0.7;0.7;0.7;0.7;0.7;0.7;0.7;0.3" dur="14s" repeatCount="indefinite"/>
-  </circle>
-  <text x="320" y="62" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11" opacity="0">
-    event
-    <animate attributeName="opacity" values="0;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.4;0.15" dur="14s" repeatCount="indefinite"/>
+  <text x="240" y="152" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="13" opacity="0.4">
+    writer
+  </text>
+  <text x="240" y="175" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="18" font-weight="300" opacity="0">
+    .41
+    <animate attributeName="opacity" values="0;0;0;0;0.8;0.8;0.3;0" dur="12s" repeatCount="indefinite"/>
+  </text>
+  <text x="240" y="195" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="11" opacity="0">
+    narrative
+    <animate attributeName="opacity" values="0;0;0;0;0.35;0.35;0.15;0" dur="12s" repeatCount="indefinite"/>
   </text>
 
-  <!-- ═══ PATHS ═══ -->
-  <line x1="305" y1="95" x2="120" y2="155" stroke="#fff" stroke-width="0.5" opacity="0">
-    <animate attributeName="opacity" values="0;0;0.25;0.25;0.25;0.25;0.25;0.25;0.1;0" dur="14s" repeatCount="indefinite"/>
-  </line>
-  <line x1="320" y1="100" x2="320" y2="155" stroke="#fff" stroke-width="0.5" opacity="0">
-    <animate attributeName="opacity" values="0;0;0.25;0.25;0.25;0.25;0.25;0.25;0.1;0" dur="14s" repeatCount="indefinite"/>
-  </line>
-  <line x1="335" y1="95" x2="520" y2="155" stroke="#fff" stroke-width="0.5" opacity="0">
-    <animate attributeName="opacity" values="0;0;0.25;0.25;0.25;0.25;0.25;0.25;0.1;0" dur="14s" repeatCount="indefinite"/>
-  </line>
-
-  <!-- ═══ TRAVELING DOTS ═══ -->
-  <circle r="2.5" fill="#fff" filter="url(#glow)" opacity="0">
-    <animate attributeName="opacity" values="0;0;0.9;0;0;0;0;0;0;0" dur="14s" repeatCount="indefinite"/>
-    <animate attributeName="cx" values="305;305;120;120;120;120;120;120;120;120" dur="14s" repeatCount="indefinite" calcMode="spline" keySplines="0 0 1 1;0.4 0 0.2 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1"/>
-    <animate attributeName="cy" values="95;95;155;155;155;155;155;155;155;155" dur="14s" repeatCount="indefinite" calcMode="spline" keySplines="0 0 1 1;0.4 0 0.2 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1"/>
+  <!-- AGENT 3 -->
+  <circle cx="380" cy="120" r="16" fill="none" stroke="#fff" stroke-width="0.6" opacity="0.15">
+    <animate attributeName="opacity" values="0.15;0.15;0.15;0.5;0.35;0.35;0.2;0.15" dur="12s" repeatCount="indefinite"/>
   </circle>
-  <circle r="2.5" fill="#fff" filter="url(#glow)" opacity="0">
-    <animate attributeName="opacity" values="0;0;0.9;0;0;0;0;0;0;0" dur="14s" repeatCount="indefinite"/>
-    <animate attributeName="cx" values="320;320;320;320;320;320;320;320;320;320" dur="14s" repeatCount="indefinite"/>
-    <animate attributeName="cy" values="100;100;155;155;155;155;155;155;155;155" dur="14s" repeatCount="indefinite" calcMode="spline" keySplines="0 0 1 1;0.4 0 0.2 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1"/>
-  </circle>
-  <circle r="2.5" fill="#fff" filter="url(#glow)" opacity="0">
-    <animate attributeName="opacity" values="0;0;0.9;0;0;0;0;0;0;0" dur="14s" repeatCount="indefinite"/>
-    <animate attributeName="cx" values="335;335;520;520;520;520;520;520;520;520" dur="14s" repeatCount="indefinite" calcMode="spline" keySplines="0 0 1 1;0.4 0 0.2 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1"/>
-    <animate attributeName="cy" values="95;95;155;155;155;155;155;155;155;155" dur="14s" repeatCount="indefinite" calcMode="spline" keySplines="0 0 1 1;0.4 0 0.2 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1"/>
-  </circle>
+  <text x="380" y="152" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="13" opacity="0.4">
+    reviewer
+  </text>
+  <text x="380" y="175" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="18" font-weight="300" opacity="0">
+    .93
+    <animate attributeName="opacity" values="0;0;0;0;0.8;0.8;0.3;0" dur="12s" repeatCount="indefinite"/>
+  </text>
+  <text x="380" y="195" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="11" opacity="0">
+    risk
+    <animate attributeName="opacity" values="0;0;0;0;0.35;0.35;0.15;0" dur="12s" repeatCount="indefinite"/>
+  </text>
 
-  <!-- ═══ AGENT A — analyst ═══ -->
-  <g transform="translate(120, 190)">
-    <!-- Lens -->
-    <circle cx="0" cy="0" r="22" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.2">
-      <animate attributeName="opacity" values="0.2;0.2;0.2;0.6;0.4;0.4;0.4;0.4;0.25;0.2" dur="14s" repeatCount="indefinite"/>
-      <animate attributeName="r" values="22;22;22;26;24;24;24;24;22;22" dur="14s" repeatCount="indefinite" calcMode="spline" keySplines="0 0 1 1;0 0 1 1;0.25 0.1 0.25 1;0.25 0.1 0.25 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1"/>
-    </circle>
-    <circle cx="0" cy="0" r="6" fill="#fff" opacity="0.04">
-      <animate attributeName="opacity" values="0.04;0.04;0.04;0.2;0.1;0.1;0.1;0.1;0.04;0.04" dur="14s" repeatCount="indefinite"/>
-    </circle>
-
-    <!-- Name -->
-    <text x="0" y="40" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="12" opacity="0.45">analyst</text>
-
-    <!-- Result: single line -->
-    <text x="0" y="58" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="11" opacity="0">
-      0.82 — trend
-      <animate attributeName="opacity" values="0;0;0;0;0.65;0.65;0.65;0.65;0.25;0" dur="14s" repeatCount="indefinite"/>
-    </text>
-  </g>
-
-  <!-- ═══ AGENT B — writer ═══ -->
-  <g transform="translate(320, 190)">
-    <circle cx="0" cy="0" r="22" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.2">
-      <animate attributeName="opacity" values="0.2;0.2;0.2;0.6;0.4;0.4;0.4;0.4;0.25;0.2" dur="14s" repeatCount="indefinite"/>
-      <animate attributeName="r" values="22;22;22;26;24;24;24;24;22;22" dur="14s" repeatCount="indefinite" calcMode="spline" keySplines="0 0 1 1;0 0 1 1;0.25 0.1 0.25 1;0.25 0.1 0.25 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1"/>
-    </circle>
-    <circle cx="0" cy="0" r="6" fill="#fff" opacity="0.04">
-      <animate attributeName="opacity" values="0.04;0.04;0.04;0.2;0.1;0.1;0.1;0.1;0.04;0.04" dur="14s" repeatCount="indefinite"/>
-    </circle>
-
-    <text x="0" y="40" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="12" opacity="0.45">writer</text>
-
-    <text x="0" y="58" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="11" opacity="0">
-      0.41 — narrative
-      <animate attributeName="opacity" values="0;0;0;0;0.65;0.65;0.65;0.65;0.25;0" dur="14s" repeatCount="indefinite"/>
-    </text>
-  </g>
-
-  <!-- ═══ AGENT C — reviewer ═══ -->
-  <g transform="translate(520, 190)">
-    <circle cx="0" cy="0" r="22" fill="none" stroke="#fff" stroke-width="0.8" opacity="0.2">
-      <animate attributeName="opacity" values="0.2;0.2;0.2;0.6;0.4;0.4;0.4;0.4;0.25;0.2" dur="14s" repeatCount="indefinite"/>
-      <animate attributeName="r" values="22;22;22;26;24;24;24;24;22;22" dur="14s" repeatCount="indefinite" calcMode="spline" keySplines="0 0 1 1;0 0 1 1;0.25 0.1 0.25 1;0.25 0.1 0.25 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1"/>
-    </circle>
-    <circle cx="0" cy="0" r="6" fill="#fff" opacity="0.04">
-      <animate attributeName="opacity" values="0.04;0.04;0.04;0.2;0.1;0.1;0.1;0.1;0.04;0.04" dur="14s" repeatCount="indefinite"/>
-    </circle>
-
-    <text x="0" y="40" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="12" opacity="0.45">reviewer</text>
-
-    <text x="0" y="58" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="11" opacity="0">
-      0.93 — risk
-      <animate attributeName="opacity" values="0;0;0;0;0.65;0.65;0.65;0.65;0.25;0" dur="14s" repeatCount="indefinite"/>
-    </text>
-  </g>
-
-  <!-- ═══ SELECTIVE SHARE ═══ -->
-  <line x1="135" y1="260" x2="270" y2="295" stroke="#fff" stroke-width="0.4" opacity="0">
-    <animate attributeName="opacity" values="0;0;0;0;0;0;0.25;0.25;0.1;0" dur="14s" repeatCount="indefinite"/>
+  <!-- share line -->
+  <line x1="100" y1="205" x2="200" y2="230" stroke="#fff" stroke-width="0.3" opacity="0">
+    <animate attributeName="opacity" values="0;0;0;0;0;0.25;0.25;0" dur="12s" repeatCount="indefinite"/>
   </line>
-  <circle r="2" fill="#fff" filter="url(#glow)" opacity="0">
-    <animate attributeName="opacity" values="0;0;0;0;0;0;0.8;0;0;0" dur="14s" repeatCount="indefinite"/>
-    <animate attributeName="cx" values="135;135;135;135;135;135;270;270;270;270" dur="14s" repeatCount="indefinite" calcMode="spline" keySplines="0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0.4 0 0.2 1;0 0 1 1;0 0 1 1;0 0 1 1"/>
-    <animate attributeName="cy" values="260;260;260;260;260;260;295;295;295;295" dur="14s" repeatCount="indefinite" calcMode="spline" keySplines="0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0.4 0 0.2 1;0 0 1 1;0 0 1 1;0 0 1 1"/>
-  </circle>
-
-  <!-- Shared memory -->
-  <rect x="268" y="285" width="104" height="22" rx="4" fill="none" stroke="#fff" stroke-width="0.5" stroke-dasharray="3,3" opacity="0">
-    <animate attributeName="opacity" values="0;0;0;0;0;0;0;0.3;0.3;0" dur="14s" repeatCount="indefinite"/>
+  <rect x="198" y="222" width="84" height="18" rx="3" fill="none" stroke="#fff" stroke-width="0.4" stroke-dasharray="2,2" opacity="0">
+    <animate attributeName="opacity" values="0;0;0;0;0;0;0.3;0" dur="12s" repeatCount="indefinite"/>
   </rect>
-  <text x="320" y="300" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="10" opacity="0">
+  <text x="240" y="235" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="10" opacity="0">
     shared
-    <animate attributeName="opacity" values="0;0;0;0;0;0;0;0.25;0.25;0" dur="14s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;0;0;0;0;0;0.25;0" dur="12s" repeatCount="indefinite"/>
   </text>
 
-  <!-- Footer -->
-  <text x="320" y="350" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10" opacity="0.15">
-    private by default — perspective is the feature
+  <!-- footer -->
+  <text x="240" y="268" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="10" opacity="0.12">
+    private by default
   </text>
 </svg>
