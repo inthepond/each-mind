@@ -2,6 +2,12 @@
 
 **Per-agent memory protocol for multi-agent systems**
 
+<picture>
+  <img alt="eachmind concept — same event, different perspective" src="assets/eachmind-concept.svg" width="100%">
+</picture>
+
+> **The problem:** shared memory = shared perspective = no real team cognition. But fully isolated memory = no collaboration, no learning from each other.
+
 ---
 
 ## Problem Statement
