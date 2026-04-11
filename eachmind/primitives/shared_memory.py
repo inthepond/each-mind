@@ -42,6 +42,15 @@ class SharedEntry:
     timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     entry_id: str = field(default_factory=lambda: str(uuid.uuid4()))
     metadata: dict[str, Any] = field(default_factory=dict)
+    ttl: int | None = None  # time to live in seconds; None = never expires
+
+    def is_expired(self) -> bool:
+        """Check if this entry has expired based on its TTL."""
+        if self.ttl is None:
+            return False
+        created = datetime.fromisoformat(self.timestamp)
+        elapsed = (datetime.now(timezone.utc) - created).total_seconds()
+        return elapsed >= self.ttl
 
 
 @dataclass
@@ -64,6 +73,7 @@ class SharedMemory:
     team_id: str = "default"
     entries: list[SharedEntry] = field(default_factory=list)
     backend: Any = None
+    default_ttl: int | None = None  # default TTL for new entries
 
     def __post_init__(self) -> None:
         """Hydrate entries from backend if one is provided."""
@@ -80,6 +90,7 @@ class SharedMemory:
         scope: ShareScope = ShareScope.TEAM,
         targets: list[str] | None = None,
         reason: str = "",
+        ttl: int | None = None,
         **metadata: Any,
     ) -> SharedEntry:
         """Publish a piece of knowledge to shared memory.
@@ -90,11 +101,13 @@ class SharedMemory:
             scope: Who should be able to see this.
             targets: Specific agent IDs (for TARGETED scope).
             reason: Why the agent is sharing this.
+            ttl: Time to live in seconds. Falls back to default_ttl if not set.
             **metadata: Additional context.
 
         Returns:
             The created SharedEntry.
         """
+        effective_ttl = ttl if ttl is not None else self.default_ttl
         entry = SharedEntry(
             content=content,
             shared_by=shared_by,
@@ -102,6 +115,7 @@ class SharedMemory:
             targets=targets or [],
             reason=reason,
             metadata=metadata,
+            ttl=effective_ttl,
         )
         self.entries.append(entry)
 
@@ -131,7 +145,7 @@ class SharedMemory:
         Returns:
             List of accessible SharedEntry objects, most recent first.
         """
-        results = list(self.entries)
+        results = [e for e in self.entries if not e.is_expired()]
 
         if agent_id is not None:
             results = [
@@ -147,6 +161,20 @@ class SharedMemory:
 
         results.sort(key=lambda e: e.timestamp, reverse=True)
         return results[:limit]
+
+    def cleanup(self) -> int:
+        """Remove expired entries. Returns count of entries removed."""
+        before = len(self.entries)
+        self.entries = [e for e in self.entries if not e.is_expired()]
+        # Also clean from backend if present
+        if self.backend is not None:
+            # Re-persist the cleaned list
+            self.backend.clear("shared_entries")
+            for entry in self.entries:
+                entry_data = dataclasses.asdict(entry)
+                entry_data["scope"] = entry.scope.value
+                self.backend.save("shared_entries", entry.entry_id, entry_data)
+        return before - len(self.entries)
 
     @property
     def size(self) -> int:
