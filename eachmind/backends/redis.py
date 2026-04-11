@@ -4,9 +4,10 @@ Install: pip install eachmind[redis]
 """
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass, field
 from typing import Any
+
+from eachmind.serialization import JSONSerializer, Serializer
 
 try:
     import redis as redis_lib
@@ -25,6 +26,7 @@ class RedisBackend:
     """
     url: str = "redis://localhost:6379"
     prefix: str = "eachmind"
+    serializer: Serializer = field(default_factory=JSONSerializer)
     _client: Any = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -37,18 +39,18 @@ class RedisBackend:
         return f"{self.prefix}:{collection}:*"
 
     def save(self, collection: str, key: str, value: Any) -> None:
-        self._client.set(self._key(collection, key), json.dumps(value))
+        self._client.set(self._key(collection, key), self.serializer.serialize(value))
 
     def get(self, collection: str, key: str) -> Any | None:
         raw = self._client.get(self._key(collection, key))
-        return json.loads(raw) if raw else None
+        return self.serializer.deserialize(raw) if raw else None
 
     def list(self, collection: str) -> list[Any]:
         keys = self._client.keys(self._collection_pattern(collection))
         if not keys:
             return []
         values = self._client.mget(keys)
-        return [json.loads(v) for v in values if v is not None]
+        return [self.serializer.deserialize(v) for v in values if v is not None]
 
     def delete(self, collection: str, key: str) -> None:
         self._client.delete(self._key(collection, key))

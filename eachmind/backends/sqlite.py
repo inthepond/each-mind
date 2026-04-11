@@ -1,10 +1,11 @@
 """SQLite storage backend — persistent, zero external dependencies."""
 from __future__ import annotations
 
-import json
 import sqlite3
 from dataclasses import dataclass, field
 from typing import Any
+
+from eachmind.serialization import JSONSerializer, Serializer
 
 
 @dataclass
@@ -14,6 +15,7 @@ class SQLiteBackend:
         db_path: Path to SQLite file, or ":memory:" for in-memory.
     """
     db_path: str = "eachmind.db"
+    serializer: Serializer = field(default_factory=JSONSerializer)
     _conn: sqlite3.Connection = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -31,7 +33,7 @@ class SQLiteBackend:
     def save(self, collection: str, key: str, value: Any) -> None:
         self._conn.execute(
             "INSERT OR REPLACE INTO store (collection, key, value) VALUES (?, ?, ?)",
-            (collection, key, json.dumps(value)),
+            (collection, key, self.serializer.serialize(value)),
         )
         self._conn.commit()
 
@@ -40,13 +42,13 @@ class SQLiteBackend:
             "SELECT value FROM store WHERE collection = ? AND key = ?",
             (collection, key),
         ).fetchone()
-        return json.loads(row[0]) if row else None
+        return self.serializer.deserialize(row[0]) if row else None
 
     def list(self, collection: str) -> list[Any]:
         rows = self._conn.execute(
             "SELECT value FROM store WHERE collection = ?", (collection,),
         ).fetchall()
-        return [json.loads(row[0]) for row in rows]
+        return [self.serializer.deserialize(row[0]) for row in rows]
 
     def delete(self, collection: str, key: str) -> None:
         self._conn.execute(
