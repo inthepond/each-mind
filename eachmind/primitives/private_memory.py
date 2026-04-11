@@ -34,6 +34,7 @@ class PrivateMemory:
     memories: list[EncodedMemory] = field(default_factory=list)
     capacity: int = 0  # 0 = unlimited
     backend: Any = None
+    retriever: Any = None
 
     def __post_init__(self) -> None:
         """Hydrate memories from backend if one is provided."""
@@ -93,9 +94,8 @@ class PrivateMemory:
     def search(self, query: str) -> list[EncodedMemory]:
         """Search memories by content similarity.
 
-        A simple text-based search over encoded content. Production
-        implementations should override this with vector similarity
-        or more sophisticated retrieval.
+        If a retriever is configured, delegates to it for ranked search.
+        Otherwise falls back to simple substring matching.
 
         Args:
             query: Search query string.
@@ -103,6 +103,10 @@ class PrivateMemory:
         Returns:
             List of matching memories.
         """
+        if self.retriever is not None:
+            return self.retriever.search(query, self.memories)
+
+        # Fallback: existing substring search
         query_lower = query.lower()
         results = []
 
