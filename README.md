@@ -3,11 +3,11 @@
 **Per-agent memory protocol for multi-agent systems**
 
 <p align="center">
-  <video src="https://github.com/inthepond/each-mind/raw/main/assets/eachmind-intro.mp4" poster="assets/intro-poster.png" controls muted loop playsinline width="100%">
-    <a href="https://github.com/inthepond/each-mind/blob/main/assets/eachmind-intro.mp4">
-      <img alt="eachmind — watch the 22-second intro" src="assets/intro-poster.png" width="100%">
-    </a>
-  </video>
+  <a href="https://github.com/inthepond/each-mind/blob/main/assets/eachmind-intro.mp4">
+    <img alt="eachmind — watch the 22-second intro film" src="assets/intro-poster.png" width="100%">
+  </a>
+  <br>
+  <em>▶&nbsp; Click to watch the 22-second intro</em>
 </p>
 
 > **The problem:** shared memory = shared perspective = no real team cognition. But fully isolated memory = no collaboration, no learning from each other.
