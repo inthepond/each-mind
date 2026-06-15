@@ -4,10 +4,10 @@
 
 <p align="center">
   <a href="https://github.com/inthepond/each-mind/blob/main/assets/eachmind-intro.mp4">
-    <img alt="eachmind — watch the 22-second intro film" src="assets/intro-poster.png" width="100%">
+    <img alt="eachmind — memory & continuity for AI agents" src="assets/eachmind-intro.gif" width="100%">
   </a>
   <br>
-  <em>▶&nbsp; Click to watch the 22-second intro</em>
+  <em><a href="https://github.com/inthepond/each-mind/blob/main/assets/eachmind-intro.mp4">Watch in HD ↗</a></em>
 </p>
 
 > **The problem:** shared memory = shared perspective = no real team cognition. But fully isolated memory = no collaboration, no learning from each other.
