@@ -10,9 +10,12 @@ from __future__ import annotations
 
 import dataclasses
 from dataclasses import dataclass, field
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from eachmind.primitives.perspective import EncodedMemory
+
+if TYPE_CHECKING:
+    from eachmind.retrieval.base import Retriever
 
 
 @dataclass
@@ -34,13 +37,16 @@ class PrivateMemory:
     memories: list[EncodedMemory] = field(default_factory=list)
     capacity: int = 0  # 0 = unlimited
     backend: Any = None
-    retriever: Any = None
+    retriever: Retriever | None = None
 
     def __post_init__(self) -> None:
         """Hydrate memories from backend if one is provided."""
         if self.backend is not None and not self.memories:
             for data in self.backend.list("private_memories"):
                 self.memories.append(EncodedMemory(**data))
+        # Enforce capacity in case the backend held more than capacity allows.
+        while self.capacity > 0 and len(self.memories) > self.capacity:
+            self._evict()
 
     def store(self, encoded: EncodedMemory) -> None:
         """Store an encoded memory.
@@ -128,6 +134,8 @@ class PrivateMemory:
             return
         least_salient = min(self.memories, key=lambda m: m.salience)
         self.memories.remove(least_salient)
+        if self.backend is not None:
+            self.backend.delete("private_memories", least_salient.event_id)
 
     def __repr__(self) -> str:
         return f"PrivateMemory(agent={self.agent_id!r}, size={self.size})"

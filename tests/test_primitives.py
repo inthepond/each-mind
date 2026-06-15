@@ -88,6 +88,27 @@ class TestPrivateMemory:
 
         assert memory.size == 2
 
+    def test_capacity_eviction_is_durable(self):
+        """Evicted memories must be removed from the backend too, so a reload
+        does not resurrect them and the capacity invariant survives a restart.
+        """
+        from eachmind.backends import InMemoryBackend
+
+        backend = InMemoryBackend()
+        memory = PrivateMemory(agent_id="test", capacity=2, backend=backend)
+        perspective = Perspective(role="test")
+
+        for i in range(5):
+            memory.store(perspective.encode(MemoryEvent(content=f"event {i}", source="test")))
+
+        assert memory.size == 2
+        # Backend must not retain the evicted entries.
+        assert len(backend.list("private_memories")) == 2
+
+        # Simulating a restart: hydrating from the backend stays within capacity.
+        reloaded = PrivateMemory(agent_id="test", capacity=2, backend=backend)
+        assert reloaded.size == 2
+
     def test_search(self):
         perspective = Perspective(role="test")
         memory = PrivateMemory(agent_id="test")
@@ -155,6 +176,30 @@ class TestDrift:
 
         measurement = drift_tracker.measure("a", p1, "b", p2)
         assert 0.0 <= measurement.drift_value <= 1.0
+
+    def test_team_diversity_is_a_pure_read(self):
+        """Computing diversity must not mutate measurement history."""
+        drift_tracker = Drift()
+        perspectives = {
+            "a": Perspective(role="analyst"),
+            "b": Perspective(role="writer"),
+            "c": Perspective(role="reviewer"),
+        }
+        drift_tracker.team_diversity(perspectives)
+        drift_tracker.team_diversity(perspectives)
+        assert drift_tracker.measurements == []
+
+    def test_snapshot_records_all_pairs(self):
+        """snapshot() explicitly records one measurement per agent pair."""
+        drift_tracker = Drift()
+        perspectives = {
+            "a": Perspective(role="analyst"),
+            "b": Perspective(role="writer"),
+            "c": Perspective(role="reviewer"),
+        }
+        recorded = drift_tracker.snapshot(perspectives)
+        assert len(recorded) == 3  # 3 choose 2
+        assert len(drift_tracker.measurements) == 3
 
     def test_team_diversity(self):
         drift_tracker = Drift()

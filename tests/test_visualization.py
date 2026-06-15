@@ -33,7 +33,7 @@ class TestDriftVisualization:
         perspectives = {name: a.perspective for name, a in agents.items()}
         # Take multiple measurements to build timeline
         for _ in range(3):
-            drift_tracker.team_diversity(perspectives)
+            drift_tracker.snapshot(perspectives)
             # Observe more events to evolve perspectives
             for agent in agents.values():
                 agent.observe(MemoryEvent(content="evolving data", source="stream"))

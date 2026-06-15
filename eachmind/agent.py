@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import contextlib
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, cast
 
 from eachmind.primitives.consolidation import Consolidation
 from eachmind.primitives.memory_event import MemoryEvent
@@ -41,9 +41,12 @@ class Agent:
 
     name: str
     role: str = "general"
-    perspective: Perspective = field(default=None)
-    private_memory: PrivateMemory = field(default=None)
-    consolidation: Consolidation = field(default=None)
+    # Default to None and populate in __post_init__ (these depend on name/role).
+    # cast keeps the declared type non-optional so call sites stay clean while
+    # the real runtime default is None.
+    perspective: Perspective = field(default=cast("Perspective", None))
+    private_memory: PrivateMemory = field(default=cast("PrivateMemory", None))
+    consolidation: Consolidation = field(default=cast("Consolidation", None))
     shared_memory: SharedMemory | None = None
     hooks: list[Any] = field(default_factory=list)
 
@@ -93,27 +96,24 @@ class Agent:
             List of memories or shared entries.
         """
         if isinstance(source, ShareScope) and self.shared_memory is not None:
-            results = self.shared_memory.recall(agent_id=self.name, source=source, limit=limit)
-            source_name = "shared"
-            for hook in self.hooks:
-                with contextlib.suppress(Exception):
-                    hook.on_recall(self.name, len(results), source_name)
-            return results
+            shared = self.shared_memory.recall(agent_id=self.name, source=source, limit=limit)
+            self._notify_recall(len(shared), "shared")
+            return shared
 
         if source is SharedMemory and self.shared_memory is not None:
-            results = self.shared_memory.recall(agent_id=self.name, limit=limit)
-            source_name = "shared"
-            for hook in self.hooks:
-                with contextlib.suppress(Exception):
-                    hook.on_recall(self.name, len(results), source_name)
-            return results
+            shared = self.shared_memory.recall(agent_id=self.name, limit=limit)
+            self._notify_recall(len(shared), "shared")
+            return shared
 
-        results = self.private_memory.recall(min_salience=min_salience, limit=limit)
-        source_name = "private"
+        private = self.private_memory.recall(min_salience=min_salience, limit=limit)
+        self._notify_recall(len(private), "private")
+        return private
+
+    def _notify_recall(self, count: int, source_name: str) -> None:
+        """Fire on_recall hooks, suppressing any hook-side errors."""
         for hook in self.hooks:
             with contextlib.suppress(Exception):
-                hook.on_recall(self.name, len(results), source_name)
-        return results
+                hook.on_recall(self.name, count, source_name)
 
     def share(
         self,

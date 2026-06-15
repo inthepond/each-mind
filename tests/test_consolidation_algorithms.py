@@ -85,6 +85,73 @@ class TestTemporalConsolidation:
             assert decayed < initial
 
 
+class TestConsolidationIdempotency:
+    """Consolidation is meant to run repeatedly over an agent's lifetime.
+    Re-running it over the same memories must not keep re-counting the same
+    events as fresh evidence (which would inflate confidence without bound).
+    """
+
+    def _memories(self):
+        perspective = Perspective(role="test", priors={"revenue": 0.8})
+        return [
+            perspective.encode(MemoryEvent(content=f"revenue point {i}", source="test"))
+            for i in range(5)
+        ]
+
+    def test_repeated_process_is_stable(self):
+        consolidation = Consolidation(consolidation_threshold=2)
+        memories = self._memories()
+
+        consolidation.process(memories)
+        belief = consolidation.beliefs[0]
+        first_evidence = belief.evidence_count
+        first_confidence = belief.confidence
+
+        # Running again over the same memories must not add new evidence.
+        for _ in range(3):
+            consolidation.process(memories)
+
+        assert belief.evidence_count == first_evidence
+        assert belief.confidence == first_confidence
+        # No duplicate event IDs accumulated.
+        assert len(belief.source_events) == len(set(belief.source_events))
+
+    def test_temporal_strategy_is_also_idempotent(self):
+        consolidation = Consolidation(consolidation_threshold=2, strategy="temporal")
+        memories = self._memories()
+
+        consolidation.process(memories)
+        belief = consolidation.beliefs[0]
+        first_evidence = belief.evidence_count
+
+        consolidation.process(memories)
+        assert belief.evidence_count == first_evidence
+        assert len(belief.source_events) == len(set(belief.source_events))
+
+
+class TestBeliefIdentity:
+    """Distinct belief categories that happen to share a tag must stay separate."""
+
+    def test_association_and_salience_beliefs_not_merged(self):
+        # role == "revenue" and source "revenue" is a relevant source, so these
+        # memories produce BOTH an association belief tagged {"revenue"} and a
+        # salience belief tagged {"salience", "revenue"}.
+        perspective = Perspective(
+            role="revenue",
+            priors={"relevant_sources": ["revenue"], "revenue": 0.8},
+        )
+        memories = [
+            perspective.encode(MemoryEvent(content=f"revenue point {i}", source="revenue"))
+            for i in range(3)
+        ]
+        consolidation = Consolidation(consolidation_threshold=2)
+        consolidation.process(memories)
+
+        tag_sets = [frozenset(b.tags) for b in consolidation.beliefs]
+        assert frozenset({"revenue"}) in tag_sets
+        assert frozenset({"salience", "revenue"}) in tag_sets
+
+
 class TestBackwardCompatibility:
     def test_existing_process_behavior_unchanged(self):
         """The default (frequency) strategy should work exactly as before."""
