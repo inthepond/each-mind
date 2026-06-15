@@ -119,6 +119,10 @@ class Drift:
         Measures the average pairwise drift across all agents. Higher
         values mean more diverse thinking; lower values suggest groupthink.
 
+        This is a pure read: it does not record anything to measurement
+        history. Use :meth:`snapshot` when you want to capture a point in
+        time for the drift timeline.
+
         Args:
             perspectives: Mapping of agent_id to their current Perspective.
 
@@ -134,14 +138,37 @@ class Drift:
 
         for i, agent_a in enumerate(agents):
             for agent_b in agents[i + 1:]:
-                measurement = self.measure(
-                    agent_a, perspectives[agent_a],
-                    agent_b, perspectives[agent_b],
-                )
-                total_drift += measurement.drift_value
+                total_drift += perspectives[agent_a].drift_from(perspectives[agent_b])
                 pair_count += 1
 
         return total_drift / pair_count if pair_count > 0 else 0.0
+
+    def snapshot(
+        self, perspectives: dict[str, Perspective]
+    ) -> list[DriftMeasurement]:
+        """Record a drift measurement for every agent pair at this moment.
+
+        Unlike :meth:`team_diversity` (a pure read), this deliberately appends
+        to measurement history. Call it repeatedly over time to build the
+        timeline that drift visualizations consume.
+
+        Args:
+            perspectives: Mapping of agent_id to their current Perspective.
+
+        Returns:
+            The measurements recorded for this snapshot.
+        """
+        agents = list(perspectives.keys())
+        recorded: list[DriftMeasurement] = []
+        for i, agent_a in enumerate(agents):
+            for agent_b in agents[i + 1:]:
+                recorded.append(
+                    self.measure(
+                        agent_a, perspectives[agent_a],
+                        agent_b, perspectives[agent_b],
+                    )
+                )
+        return recorded
 
     def __repr__(self) -> str:
         return f"Drift(measurements={len(self.measurements)})"

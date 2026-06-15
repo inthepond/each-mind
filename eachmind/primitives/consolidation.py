@@ -258,9 +258,16 @@ class Consolidation:
                 seen.add(eid)
 
     def _find_or_create_belief(self, content: str, tags: list[str]) -> Belief:
-        """Find an existing belief or create a new one."""
+        """Find an existing belief with the same tag set, or create a new one.
+
+        Matching is on the full tag set, not any-tag overlap. Overlap matching
+        conflated distinct beliefs: e.g. an association belief tagged {"revenue"}
+        would be merged with a salience belief tagged {"salience", "revenue"}
+        because they share one tag.
+        """
+        target = set(tags)
         for belief in self.beliefs:
-            if set(belief.tags) & set(tags):
+            if set(belief.tags) == target:
                 return belief
 
         belief = Belief(content=content, tags=tags)

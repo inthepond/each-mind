@@ -252,8 +252,9 @@ def main() -> None:
             for agent in agents.values():
                 agent.consolidate()
 
-        # Measure drift across the team
+        # Record a pairwise drift snapshot (for the timeline) and report diversity
         perspectives = {name: a.perspective for name, a in agents.items()}
+        drift_tracker.snapshot(perspectives)
         diversity = drift_tracker.team_diversity(perspectives)
 
         total_events = sum(len(evts) for evts in role_batch.values())

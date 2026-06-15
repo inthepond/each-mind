@@ -177,6 +177,30 @@ class TestDrift:
         measurement = drift_tracker.measure("a", p1, "b", p2)
         assert 0.0 <= measurement.drift_value <= 1.0
 
+    def test_team_diversity_is_a_pure_read(self):
+        """Computing diversity must not mutate measurement history."""
+        drift_tracker = Drift()
+        perspectives = {
+            "a": Perspective(role="analyst"),
+            "b": Perspective(role="writer"),
+            "c": Perspective(role="reviewer"),
+        }
+        drift_tracker.team_diversity(perspectives)
+        drift_tracker.team_diversity(perspectives)
+        assert drift_tracker.measurements == []
+
+    def test_snapshot_records_all_pairs(self):
+        """snapshot() explicitly records one measurement per agent pair."""
+        drift_tracker = Drift()
+        perspectives = {
+            "a": Perspective(role="analyst"),
+            "b": Perspective(role="writer"),
+            "c": Perspective(role="reviewer"),
+        }
+        recorded = drift_tracker.snapshot(perspectives)
+        assert len(recorded) == 3  # 3 choose 2
+        assert len(drift_tracker.measurements) == 3
+
     def test_team_diversity(self):
         drift_tracker = Drift()
         perspectives = {

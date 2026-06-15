@@ -129,6 +129,29 @@ class TestConsolidationIdempotency:
         assert len(belief.source_events) == len(set(belief.source_events))
 
 
+class TestBeliefIdentity:
+    """Distinct belief categories that happen to share a tag must stay separate."""
+
+    def test_association_and_salience_beliefs_not_merged(self):
+        # role == "revenue" and source "revenue" is a relevant source, so these
+        # memories produce BOTH an association belief tagged {"revenue"} and a
+        # salience belief tagged {"salience", "revenue"}.
+        perspective = Perspective(
+            role="revenue",
+            priors={"relevant_sources": ["revenue"], "revenue": 0.8},
+        )
+        memories = [
+            perspective.encode(MemoryEvent(content=f"revenue point {i}", source="revenue"))
+            for i in range(3)
+        ]
+        consolidation = Consolidation(consolidation_threshold=2)
+        consolidation.process(memories)
+
+        tag_sets = [frozenset(b.tags) for b in consolidation.beliefs]
+        assert frozenset({"revenue"}) in tag_sets
+        assert frozenset({"salience", "revenue"}) in tag_sets
+
+
 class TestBackwardCompatibility:
     def test_existing_process_behavior_unchanged(self):
         """The default (frequency) strategy should work exactly as before."""
