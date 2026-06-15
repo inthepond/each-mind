@@ -85,6 +85,50 @@ class TestTemporalConsolidation:
             assert decayed < initial
 
 
+class TestConsolidationIdempotency:
+    """Consolidation is meant to run repeatedly over an agent's lifetime.
+    Re-running it over the same memories must not keep re-counting the same
+    events as fresh evidence (which would inflate confidence without bound).
+    """
+
+    def _memories(self):
+        perspective = Perspective(role="test", priors={"revenue": 0.8})
+        return [
+            perspective.encode(MemoryEvent(content=f"revenue point {i}", source="test"))
+            for i in range(5)
+        ]
+
+    def test_repeated_process_is_stable(self):
+        consolidation = Consolidation(consolidation_threshold=2)
+        memories = self._memories()
+
+        consolidation.process(memories)
+        belief = consolidation.beliefs[0]
+        first_evidence = belief.evidence_count
+        first_confidence = belief.confidence
+
+        # Running again over the same memories must not add new evidence.
+        for _ in range(3):
+            consolidation.process(memories)
+
+        assert belief.evidence_count == first_evidence
+        assert belief.confidence == first_confidence
+        # No duplicate event IDs accumulated.
+        assert len(belief.source_events) == len(set(belief.source_events))
+
+    def test_temporal_strategy_is_also_idempotent(self):
+        consolidation = Consolidation(consolidation_threshold=2, strategy="temporal")
+        memories = self._memories()
+
+        consolidation.process(memories)
+        belief = consolidation.beliefs[0]
+        first_evidence = belief.evidence_count
+
+        consolidation.process(memories)
+        assert belief.evidence_count == first_evidence
+        assert len(belief.source_events) == len(set(belief.source_events))
+
+
 class TestBackwardCompatibility:
     def test_existing_process_behavior_unchanged(self):
         """The default (frequency) strategy should work exactly as before."""

@@ -88,6 +88,27 @@ class TestPrivateMemory:
 
         assert memory.size == 2
 
+    def test_capacity_eviction_is_durable(self):
+        """Evicted memories must be removed from the backend too, so a reload
+        does not resurrect them and the capacity invariant survives a restart.
+        """
+        from eachmind.backends import InMemoryBackend
+
+        backend = InMemoryBackend()
+        memory = PrivateMemory(agent_id="test", capacity=2, backend=backend)
+        perspective = Perspective(role="test")
+
+        for i in range(5):
+            memory.store(perspective.encode(MemoryEvent(content=f"event {i}", source="test")))
+
+        assert memory.size == 2
+        # Backend must not retain the evicted entries.
+        assert len(backend.list("private_memories")) == 2
+
+        # Simulating a restart: hydrating from the backend stays within capacity.
+        reloaded = PrivateMemory(agent_id="test", capacity=2, backend=backend)
+        assert reloaded.size == 2
+
     def test_search(self):
         perspective = Perspective(role="test")
         memory = PrivateMemory(agent_id="test")

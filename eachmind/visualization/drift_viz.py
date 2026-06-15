@@ -261,6 +261,6 @@ def plot_team_diversity(perspectives: dict[str, Perspective]) -> Figure:
             )
 
         fig.suptitle("Team Cognitive Diversity", fontsize=15, fontweight="bold", y=0.98)
-        fig.tight_layout(rect=[0, 0, 1, 0.96])
+        fig.tight_layout(rect=(0, 0, 1, 0.96))
 
     return fig

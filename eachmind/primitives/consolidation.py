@@ -112,8 +112,7 @@ class Consolidation:
                     content=f"Pattern: {pattern} is recurrently relevant",
                     tags=[pattern],
                 )
-                for eid in association_events[pattern]:
-                    belief.reinforce(eid)
+                self._reinforce_belief(belief, association_events[pattern])
                 updated.append(belief)
 
         # Consolidate by high-salience source patterns
@@ -179,8 +178,7 @@ class Consolidation:
                     content=f"Pattern: {pattern} is recurrently relevant",
                     tags=[pattern],
                 )
-                for eid in association_events[pattern]:
-                    belief.reinforce(eid)
+                self._reinforce_belief(belief, association_events[pattern])
                 updated.append(belief)
 
         # Consolidate by high-salience source patterns with temporal weighting
@@ -244,6 +242,20 @@ class Consolidation:
         """Apply time-based decay to all beliefs."""
         for belief in self.beliefs:
             belief.decay(factor)
+
+    def _reinforce_belief(self, belief: Belief, event_ids: list[str]) -> None:
+        """Reinforce a belief with evidence, skipping events already counted.
+
+        Consolidation is meant to be run repeatedly over an agent's lifetime,
+        and each run re-scans the full memory set. Without this guard, the same
+        event would be counted as fresh evidence on every call, inflating
+        evidence_count (and therefore confidence) without bound.
+        """
+        seen = set(belief.source_events)
+        for eid in event_ids:
+            if eid not in seen:
+                belief.reinforce(eid)
+                seen.add(eid)
 
     def _find_or_create_belief(self, content: str, tags: list[str]) -> Belief:
         """Find an existing belief or create a new one."""
