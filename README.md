@@ -2,9 +2,13 @@
 
 **Per-agent memory protocol for multi-agent systems**
 
-<picture>
-  <img alt="eachmind concept — same event, different perspective" src="assets/eachmind-concept.svg" width="100%">
-</picture>
+<p align="center">
+  <video src="https://github.com/inthepond/each-mind/raw/main/assets/eachmind-intro.mp4" poster="assets/intro-poster.png" controls muted loop playsinline width="100%">
+    <a href="https://github.com/inthepond/each-mind/blob/main/assets/eachmind-intro.mp4">
+      <img alt="eachmind — watch the 22-second intro" src="assets/intro-poster.png" width="100%">
+    </a>
+  </video>
+</p>
 
 > **The problem:** shared memory = shared perspective = no real team cognition. But fully isolated memory = no collaboration, no learning from each other.
 
@@ -40,6 +44,10 @@ Memory is private unless explicitly shared. Sharing is a deliberate act, not an 
 
 ### Same event, different encoding
 When agents observe the same event, each encodes it through its own perspective. Divergence is the feature, not the bug.
+
+<picture>
+  <img alt="eachmind concept — same event, different perspective" src="assets/eachmind-concept.svg" width="100%">
+</picture>
 
 ### Framework agnostic
 Works alongside OpenAI Swarm, CrewAI, LangGraph, or a hand-written agent loop. No lock-in.
